@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>shoot</title>
+
+    <style>
+        @keyframes box_ani {
+            0% {
+                bottom: 100%;
+            }
+
+            100% {
+                bottom: 0%;
+            }
+        }
+
+        @keyframes arrow_ani {
+            0% {
+                right: 8%;
+            }
+
+            100% {
+                right: 100%;
+            }
+        }
+
+        #play {
+            height: 100vh;
+            width: 100vw;
+            background-color: #D7C852;
+            background-size: cover;
+            /* background: url(yellow_back.png); */
+            position: relative;
+        }
+
+        .box {
+            height: 10vh;
+            width: 5vw;
+            background-color: green;
+            position: absolute;
+            box-shadow: -1px -1px 5px black;
+            bottom: 100%;
+            right: 100%;
+
+        }
+
+        .box2 {
+            height: 15vh;
+            width: 8vw;
+            background-color: orangered;
+            box-shadow: -1px -1px 5px black;
+            border: 0px solid red;
+            border-top-right-radius: 1vh;
+            border-bottom-right-radius: 1vh;
+            border-top-left-radius: 5vh;
+            border-bottom-left-radius: 5vh;
+            position: absolute;
+            top: 40%;
+            z-index: 2;
+            right: 5%;
+
+        }
+
+        .arrow {
+            height: 2vh;
+            width: 5vw;
+            background-color: red;
+            box-shadow: -1px -1px 5px black;
+            position: absolute;
+            border: 0px solid red;
+            border-top-left-radius: 1vh;
+            border-bottom-left-radius: 1vh;
+            animation: arrow_ani 5s linear;
+            z-index: 1;
+            top: 47%;
+            right: 100%;
+        }
+
+        #score {
+            font-size: 45px;
+            color: green;
+            height: 5%;
+
+            position: absolute;
+            top: 0px;
+            right: 5px;
+        }
+
+        .welcome {
+            height: auto;
+            visibility: hidden;
+            position: absolute;
+            width: 60vw;
+            background: rgb(27, 27, 105);
+            background: linear-gradient(94deg, rgba(27, 27, 105, 0.9831582291119573) 0%, rgba(41, 134, 78, 1) 49%, rgba(15, 15, 45, 1) 100%);
+            color: white;
+            margin-left: 20vw;
+            margin-top: 20vh;
+            border: 0px;
+            border-radius: 20px;
+            box-shadow: 3px 3px 8px black;
+            text-align: center;
+        }
+
+        .headline {
+            font-size: 65px;
+            font-weight: bolder;
+        }
+
+        .welcome .ul {
+            text-align: left;
+            font-size: 35px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        button {
+            height: 8vh;
+            width: 15vw;
+            margin: 20px;
+            font-size: larger;
+            color: white;
+            background-color: darkred;
+            border: 0px;
+            border-radius: 10px;
+            box-shadow: 1px 1px 4px black;
+        }
+
+        button:hover {
+            height: 9vh;
+            width: 16vw;
+            box-shadow: 2px 2px 6px black;
+        }
+    </style>
+
+</head>
+
+<body style="margin: 0px; padding: 0px;">
+
+
+
+    <div id="play">
+
+        <div id="welcome" class="welcome">
+            <div class="headline">SHOOTING GAME</div>
+            <ul class="ul">
+                <li>shoot as many enemy as you can using 100 bullets</li>
+                <li>Use the 'Space Key' to shoot</li>
+                <li>Use the 'Up Arrow key' to move up</li>
+                <li>Use the 'Down Arrow key' to move down</li>
+            </ul>
+            <button>EXIT</button>
+            <button>START GAME</button>
+        </div>
+
+
+
+        <div id="enemy">
+        </div>
+
+
+        <div id="shooter">
+            <div class="box2">
+            </div>
+        </div>
+
+
+        <div id="arrow">
+        </div>
+
+        <div id="score">
+            0/0
+        </div>
+
+
+        <div id="finish" class="welcome">
+            <div class="headline">GAME OVER</div>
+            <ul class="ul">
+
+            </ul>
+            <button>EXIT</button>
+        </div>
+
+    </div>
+</body>
+
+<script>
+    let last_max = 0
+    let score = 0
+    let bullets = 0
+
+    function start() {
+        const enemy = document.querySelector('#enemy')
+
+        let intera = setInterval(function () {
+            abhi = document.createElement('div')
+            abhi.className = 'box'
+            let jk = Math.floor(Math.random() * 70) + 24;
+            abhi.style.right = String(jk) + '%';
+            abhi.style.animation = "box_ani 5s linear"
+            enemy.appendChild(abhi);
+        }, 1000)
+
+
+        const shu = document.querySelector(".box2");
+        const arrow = document.querySelector('#arrow');
+        let shuposi = 40;
+        let canListenSpaceKey = true;
+        document.addEventListener("keydown", function fun(e) {
+            eve = e.key
+            if (canListenSpaceKey && eve == " ") {
+                bullets += 1;
+                canListenSpaceKey = false
+                cr = document.createElement('div')
+                cr.className = 'arrow'
+                cr.style.top = String(shuposi + 7) + '%'
+                cr.style.animation = "arrow_ani 3s linear"
+                arrow.appendChild(cr);
+                setTimeout(() => {
+                    canListenSpaceKey = true;
+                }, 800);
+            }
+            else if (eve == 'ArrowUp') {
+                shuposi -= 2;
+                shu.style.top = String(shuposi) + '%';
+                if (shuposi < 2) {
+                    shuposi = 2;
+                }
+            }
+            else if (eve == 'ArrowDown') {
+                shuposi += 2;
+                shu.style.top = String(shuposi) + '%';
+                if (shuposi >= 83) {
+                    shuposi = 83;
+                }
+            }
+        })
+
+        sco = document.querySelector('#score')
+        let interb = setInterval(function () {
+            let jk = document.querySelectorAll('.arrow')
+            let len = jk.length
+            boxes = document.querySelectorAll('.box');
+            let len2 = boxes.length
+            for (let i = 0; i < len - 5; i++) { jk[i].remove() }
+            for (let i = 0; i < len2 - 5; i++) { boxes[i].remove() }
+            for (let i = Math.max(0, len - 5); i < len; i++) {
+                for (let j = Math.max(0, len2 - 5); j < len2; j++) {
+                    let box1Rect = jk[i].getBoundingClientRect();
+                    let box2Rect = boxes[j].getBoundingClientRect();
+                    if (!(
+                        box1Rect.right < box2Rect.left ||
+                        box1Rect.left > box2Rect.right ||
+                        box1Rect.bottom < box2Rect.top ||
+                        box1Rect.top > box2Rect.bottom
+                    )) {
+                        jk[i].remove();
+                        boxes[j].remove();
+                        score += 1;
+                    }
+                }
+            }
+
+        }, 100)
+
+
+        let interc = setInterval(() => {
+            sco.innerHTML = `${score} / ${bullets}`
+            if (bullets >= 100) {
+                clearInterval(intera)
+                clearInterval(interb)
+                clearInterval(interc)
+                document.querySelector ('#arrow').style.visibility = 'hidden'
+                document.querySelector('#welcome').style.visibility = 'hidden'
+                cr = document.createElement('li');
+                cr.innerHTML = `you killed ${score} enemies using 100 bullets`
+                document.querySelector('#finish .ul').appendChild(cr);
+                if (score > 80) {
+                    cr = document.createElement('div');
+                    cr.innerHTML = `<b><h1>NICE PLAYED !!<h1></b>`
+                    document.querySelector('#finish').appendChild(cr);
+                }
+                document.querySelector('#finish').style.visibility = 'visible'
+                button = document.querySelectorAll('#finish button')
+                button[0].addEventListener('click', function (e) {
+                    window.location.href = 'about:blank';
+                })
+            }
+        }, 600);
+    }
+
+    function startPlay() {
+        document.querySelector('#welcome').style.visibility = 'visible'
+        document.querySelector('#finish').style.visibility = 'hidden'
+        button = document.querySelectorAll('#welcome button')
+        button[0].addEventListener('click', function (e) {
+            window.location.href = 'about:blank';
+        })
+        button[1].addEventListener('click', function (e) {
+            document.querySelector('#welcome').style.visibility = 'hidden'
+            start();
+        })
+    }
+
+
+    startPlay();
+
+
+</script>
+
+</html>
